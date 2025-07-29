@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Anniversary, Hopia <3</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* General Body Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f3e9; /* Light cream */
+            color: #4a4a4a; /* Dark grey for text */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align to start for scrolling content */
+            min-height: 100vh;
+            margin: 0;
+            padding: 1rem;
+            box-sizing: border-box;
+            overflow-y: auto; /* Enable scrolling for the body */
+        }
+
+        /* Main Content Wrapper for centering the initial page */
+        .main-content-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Ensure it takes full viewport height when active */
+            width: 100%;
+        }
+
+        /* Main Container Styles */
+        .container {
+            background-color: #ffffff; /* White container */
+            border: 1px solid #e0e0e0; /* Soft border */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Softer shadow */
+            max-width: 800px;
+            width: 100%;
+            padding: 3rem;
+            border-radius: 2rem; /* Even more rounded corners */
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+
+        /* Message Box Styles */
+        .message-box {
+            min-height: 180px; /* Slightly taller for more heartfelt messages */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem; /* Larger, more prominent font */
+            line-height: 2rem;
+            color: #6a6a6a; /* Medium grey for message text */
+            transition: opacity 0.7s ease-in-out; /* Slower, smoother transition */
+            font-weight: 500;
+            padding: 0 1rem; /* Add horizontal padding */
+        }
+
+        /* Navigation Button Styles */
+        .nav-button {
+            background-color: #a8dadc; /* Soft blue button */
+            color: #ffffff;
+            padding: 0.8rem 1.8rem;
+            border-radius: 1rem;
+            font-weight: 700;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle button shadow */
+        }
+        .nav-button:hover {
+            background-color: #8bbcd1; /* Slightly darker blue on hover */
+            transform: translateY(-3px); /* More pronounced lift */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        .nav-button:active {
+            transform: translateY(0);
+            background-color: #7aa1b8; /* Even darker on click */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Title Styles */
+        .title {
+            font-family: 'Playfair Display', serif; /* Elegant font for title */
+            font-size: 3.2rem; /* Larger, more grand title */
+            font-weight: 700;
+            color: #2c3e50; /* Dark blue-grey for title */
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em; /* Slightly spaced letters */
+        }
+
+        /* Subtitle Styles */
+        .subtitle {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #7f8c8d; /* Muted grey for subtitle */
+            margin-bottom: 1.5rem;
+        }
+
+        /* Photo Gallery Specific Styles */
+        #photo-gallery-page {
+            width: 100%;
+            max-width: 900px; /* Slightly wider for photos */
+            padding: 2rem 1rem;
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            align-items: center;
+            gap: 3rem; /* Space between photo rows */
+            opacity: 0; /* Initially hidden for fade-in */
+            transition: opacity 1s ease-in-out;
+        }
+
+        #photo-gallery-page.active {
+            opacity: 1;
+        }
+
+        .photo-row {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            width: 100%;
+            opacity: 0; /* Hidden by default for scroll-in effect */
+            transform: translateY(30px); /* Start slightly below */
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .photo-row.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .photo-row img {
+            width: 100%; /* Make image fill its container */
+            max-width: 400px; /* Max width for individual images */
+            height: auto;
+            border-radius: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            object-fit: cover; /* Ensure image covers the area without distortion */
+        }
+
+        .photo-row .text-content {
+            flex: 1; /* Allow text content to take remaining space */
+            text-align: left;
+            padding: 0 1rem;
+        }
+
+        .photo-row h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .photo-row p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #6a6a6a;
+        }
+
+        /* Responsive adjustments for main content */
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem;
+                gap: 2rem;
+            }
+            .title {
+                font-size: 2.5rem;
+            }
+            .subtitle {
+                font-size: 1.3rem;
+            }
+            .message-box {
+                font-size: 1.2rem;
+                line-height: 1.8rem;
+                min-height: 150px;
+            }
+            .nav-button {
+                padding: 0.7rem 1.4rem;
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1.5rem;
+                border-radius: 1.5rem;
+                gap: 1.5rem;
+            }
+            .title {
+                font-size: 2rem;
+            }
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            .message-box {
+                min-height: 130px;
+                font-size: 1.1rem;
+                line-height: 1.6rem;
+            }
+            .nav-button {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Responsive adjustments for photo gallery */
+        @media (max-width: 768px) {
+            .photo-row {
+                flex-direction: column !important; /* Stack images and text on smaller screens */
+                gap: 1.5rem;
+                text-align: center;
+            }
+            .photo-row img {
+                max-width: 100%; /* Full width on small screens */
+            }
+            .photo-row .text-content {
+                padding: 0;
+            }
+            .photo-row h3 {
+                font-size: 1.5rem;
+            }
+            .photo-row p {
+                font-size: 1rem;
+            }
+            #photo-gallery-page {
+                padding: 1.5rem 0.5rem;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .photo-row h3 {
+                font-size: 1.3rem;
+            }
+            .photo-row p {
+                font-size: 0.95rem;
+            }
+        }
+
+        /* New styles for initial hiding */
+        .hidden-at-start {
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        .visible-on-click {
+            display: flex; /* or block, depending on element's original display */
+            opacity: 1;
+        }
+        .main-message-content {
+            display: flex; /* Ensure these are flex for column layout */
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+
+        /* Styles for flower bouquet container */
+        #flowerBouquetContainer {
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: fixed; /* Position over existing content */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.95); /* Semi-transparent white background */
+            z-index: 1000; /* Ensure it's on top */
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto; /* Enable scrolling if content overflows */
+        }
+
+        #flowerBouquetContainer button {
+            margin-top: 40px; /* More space below flowers */
+        }
+
+        /* CSS for the animated single rose */
+        .flower-container {
+            display: flex;
+            justify-content: center; /* Center the single rose */
+            align-items: flex-end; /* Align to the bottom for the stem */
+            width: 100%;
+            max-width: 900px;
+            margin-top: 50px;
+            flex-wrap: wrap;
+            gap: 30px;
+            min-height: 300px; /* Give space for the rose to rise */
+            position: relative; /* For absolute positioning of the rose */
+        }
+
+        .rose {
+            position: absolute; /* Position the rose relative to its container */
+            bottom: 0; /* Start from the bottom */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px; /* Overall width for the rose */
+            height: 250px; /* Overall height including stem */
+            opacity: 0;
+            animation: rise 2s ease-out forwards;
+            animation-delay: 0.5s;
+        }
+
+        .stem {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 0; /* Start with no height */
+            background-color: #388e3c; /* Dark green */
+            border-radius: 4px;
+            animation: stem-grow 1.5s ease-out forwards;
+            animation-delay: 1s; /* Start growing after initial rose rise */
+        }
+
+        .leaf {
+            position: absolute;
+            width: 0; /* Start with no width */
+            height: 0; /* Start with no height */
+            background-color: #66bb6a; /* Lighter green */
+            border-radius: 0 50% 50% 50%; /* Leaf shape */
+            transform-origin: 0% 50%;
+            top: 150px; /* Position along the stem */
+            left: calc(50% + 5px); /* Offset from stem */
+            transform: rotate(45deg); /* Angle the leaf */
+            opacity: 0;
+            animation: leaf-grow 1s ease-out forwards;
+            animation-delay: 2.5s; /* Appear after stem grows */
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+        /* Using pseudo-elements for more complex leaf shape */
+        .leaf::before, .leaf::after {
+            content: '';
+            position: absolute;
+            background-color: #66bb6a;
+            border-radius: 50% 0 50% 50%;
+            width: 50%;
+            height: 100%;
+            top: 0;
+        }
+        .leaf::before {
+            left: -25%;
+            transform: rotate(-30deg);
+        }
+        .leaf::after {
+            left: 75%;
+            transform: rotate(30deg);
+        }
+
+
+        .rose-flower {
+            position: absolute;
+            top: 0; /* At the top of the rose container */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 100px;
+            transform-style: preserve-3d;
+        }
+
+        .rose-flower .petal {
+            position: absolute;
+            width: 60px; /* Width of petal */
+            height: 80px; /* Height of petal */
+            background: linear-gradient(to top, #e57373, #ef5350); /* Red gradient */
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; /* Rose petal shape */
+            opacity: 0;
+            transform-origin: bottom center; /* Rotate from the base of the petal */
+            animation: rose-petal-bloom 2s ease-out forwards;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.3);
+        }
+
+        /* Positioning and animation delays for rose petals */
+        .rose-flower .petal:nth-child(1) { transform: rotateY(0deg) translateZ(0px); background: linear-gradient(to top, #e57373, #ef5350); animation-delay: 3s; }
+        .rose-flower .petal:nth-child(2) { transform: rotateY(45deg) translateZ(10px); background: linear-gradient(to top, #e57373, #ef5350); animation-delay: 3.1s; }
+        .rose-flower .petal:nth-child(3) { transform: rotateY(90deg) translateZ(20px); background: linear-gradient(to top, #e57373, #ef5350); animation-delay: 3.2s; }
+        .rose-flower .petal:nth-child(4) { transform: rotateY(135deg) translateZ(10px); background: linear-gradient(to top, #e57373, #ef5350); animation-delay: 3.3s; }
+        .rose-flower .petal:nth-child(5) { transform: rotateY(180deg) translateZ(0px); background: linear-gradient(to top, #e57373, #ef5350); animation-delay: 3.4s; }
+        .rose-flower .petal:nth-child(6) { transform: rotateY(225deg) translateZ(10px); background: linear-gradient(to top, #e57373, #ef5350); animation-delay: 3.5s; }
+        .rose-flower .petal:nth-child(7) { transform: rotateY(270deg) translateZ(20px); background: linear-gradient(to top, #e57373, #ef5350); animation-delay: 3.6s; }
+        .rose-flower .petal:nth-child(8) { transform: rotateY(315deg) translateZ(10px); background: linear-gradient(to top, #e57373, #ef5350); animation-delay: 3.7s; }
+        /* Inner petals with slightly different color/transform to create depth */
+        .rose-flower .petal:nth-child(9) { transform: rotateY(0deg) translateZ(-10px) scale(0.8); background: linear-gradient(to top, #ef9a9a, #e57373); animation-delay: 3.8s; }
+        .rose-flower .petal:nth-child(10) { transform: rotateY(90deg) translateZ(-15px) scale(0.8); background: linear-gradient(to top, #ef9a9a, #e57373); animation-delay: 3.9s; }
+        .rose-flower .petal:nth-child(11) { transform: rotateY(180deg) translateZ(-10px) scale(0.8); background: linear-gradient(to top, #ef9a9a, #e57373); animation-delay: 4.0s; }
+        .rose-flower .petal:nth-child(12) { transform: rotateY(270deg) translateZ(-15px) scale(0.8); background: linear-gradient(to top, #ef9a9a, #e57373); animation-delay: 4.1s; }
+
+
+        @keyframes rise {
+            0% { bottom: -250px; opacity: 0; }
+            100% { bottom: 0; opacity: 1; }
+        }
+
+        @keyframes stem-grow {
+            0% { height: 0; }
+            100% { height: 180px; } /* Final stem height */
+        }
+
+        @keyframes leaf-grow {
+            0% { width: 0; height: 0; opacity: 0; }
+            100% { width: 40px; height: 20px; opacity: 1; }
+        }
+
+        @keyframes rose-petal-bloom {
+            0% { opacity: 0; transform: scale(0) rotateY(var(--petal-rotate, 0deg)) translateZ(var(--petal-z, 0px)); }
+            100% { opacity: 1; transform: scale(1) rotateY(var(--petal-rotate, 0deg)) translateZ(var(--petal-z, 0px)); }
+        }
+
+        /* Responsive adjustments for rose */
+        @media (max-width: 768px) {
+            .rose {
+                width: 120px;
+                height: 200px;
+            }
+            .stem {
+                height: 140px;
+            }
+            .leaf {
+                top: 100px; /* Adjust leaf position on smaller stem */
+                width: 30px;
+                height: 15px;
+            }
+            .rose-flower {
+                width: 80px;
+                height: 80px;
+            }
+            .rose-flower .petal {
+                width: 50px;
+                height: 60px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .rose {
+                width: 100px;
+                height: 180px;
+            }
+            .stem {
+                height: 120px;
+            }
+            .leaf {
+                top: 80px;
+                width: 25px;
+                height: 12px;
+            }
+            .rose-flower {
+                width: 70px;
+                height: 70px;
+            }
+            .rose-flower .petal {
+                width: 45px;
+                height: 55px;
+            }
+            #flowerBouquetContainer h2 {
+                font-size: 2rem;
+            }
+            #flowerBouquetContainer button {
+                margin-top: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <audio id="backgroundMusic" loop>
+        <source src="../Annv/Sparks.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="main-anniversary-page" class="main-content-wrapper">
+        <div class="container">
+            <h1 class="title">Happy Anniversary, Hopia! <3</h1>
+            <p class="subtitle" id="subtitle">To More years with you</p>
+
+            <div id="initial-content" class="flex flex-col sm:flex-row justify-center gap-4">
+                <button id="playMusicButton" class="nav-button">Play Music</button>
+            </div>
+
+            <div id="hidden-content" class="main-message-content hidden-at-start">
+                <div id="message-display" class="message-box">
+                    I know I can be a lot to handle sometimes, and with how busy I've been, I really appreciate how you've stayed patient and understanding with me. Even with everything going on, you continued to give me love, time, and effort throughout this year and I can't thank you enough for that. I am so grateful for all the little things you've done for me, from the treats and food to the clothes and all the thoughtful gestures that always make me smile. Happy Anniversary, Hopia! To more kain, away bati, Trips, and more years with you. I love you so much, Hopia! <3
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <button id="viewPhotosButton" class="nav-button">View Our Memories</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="photo-gallery-page">
+        <h2 class="title text-center mb-8">Fave Moments </h2>
+
+        <button id="backButton" class="nav-button self-start mb-8">← Back to Messages</button>
+
+        <div class="photo-row flex-col md:flex-row items-center">
+            <img src="../Annv/57d331c1-6e22-4a98-a3d7-2a51303c32c5.jpg" alt="A cherished memory of us" onerror="this.onerror=null;this.src='https://placehold.co/400x300/cccccc/333333?text=Image+Error';">
+            <div class="text-content">
+                <h3>First Date</h3>
+                <p>Kabado malala napapaisip ako kung alin baea ang hambaeon kara hay, basi isipon na tang nga grabe pakan-on, okay man ang suksok? humot matang?, raya malang nainisip bago mag panaw ah. </p>
+            </div>
+        </div>
+
+        <div class="photo-row flex-col md:flex-row-reverse items-center">
+            <img src="../Annv/59a0e680-0a4a-4248-a738-33fa26bc325c.jpg" alt="A happy moment together" onerror="this.onerror=null;this.src='https://placehold.co/400x300/cccccc/333333?text=Image+Error';">
+            <div class="text-content">
+                <h3>First Boracay Trip</h3>
+                <p>Medyo kabado pa sa una basi kueangon kwarata HAHAHAHA pero still we had fun, busog ag syempre unang panaw naton deywa sa boracay (nag bayad pa environmental fee HAHAHA)</p>
+            </div>
+        </div>
+
+        <div class="photo-row flex-col md:flex-row items-center">
+            <img src="../Annv/IMG_8944.JPG" alt="A quiet, loving moment" onerror="this.onerror=null;this.src='https://placehold.co/400x300/cccccc/333333?text=Image+Error';">
+            <div class="text-content">
+                <h3>First Iloilo Trip</h3>
+                <p>Medyo Kampante eun iya hay syempre iya ako ga school, pero wa pa akot sayod gid kato hay wa man abi ako ga guwa guwa sm ag festive malala ag bulok pa abi atong na stayan wat tubi HAHAHAHA. permi busog grabet gaoy mag winarang gale sa sm ag do byahe pero worth it kasi ikaw man do kaibahan</p>
+            </div>
+        </div>
+
+        <div class="photo-row flex-col md:flex-row-reverse items-center">
+            <img src="../Annv/IMG_4458.JPG" alt="A shared dream or goal" onerror="this.onerror=null;this.src='https://placehold.co/400x300/cccccc/333333?text=Image+Error';">
+            <div class="text-content">
+                <h3>US before</h3>
+                <p>Pa kuno kuno man kuno nga indi eun ako mag kaon hay busog eun, nahuya pa sa ibang mga bagay, mag pangayo kung nano</p>
+            </div>
+        </div>
+
+        <div class="photo-row flex-col md:flex-row items-center">
+            <img src="../Annv/b16785cf-5f0f-4130-8ee3-fd840fa46fb4.jpg" alt="A recent happy memory" onerror="this.onerror=null;this.src='https://placehold.co/400x300/cccccc/333333?text=Image+Error';">
+            <div class="text-content">
+                <h3>US RN</h3>
+                <p>Here we are, after all these months, and it's still you. Thank you for being my support system whenever I needed you. I'll always be here to support you in everything you do. I love you so much.</p>
+            </div>
+        </div>
+
+           <div class="photo-row flex-col md:flex-row-reverse items-center">
+            <img src="../Annv/GNYZ5982.jpg" alt="A happy moment together" onerror="this.onerror=null;this.src='https://placehold.co/400x300/cccccc/333333?text=Image+Error';">
+            <div class="text-content">
+                <h3>Favorite Picture of us</h3>
+                <p>Looking back sa pic ngara abo atong ha agyan nga hardships ag syempre kasadyahan man. Daya pagid ro first Time nga nakita ko kamo nga complete and masadya with ur fam and friends(kabado slight dahil complete kamo)</p>
+            </div>
+        </div>
+
+        <div class="flex justify-center gap-4 mt-8">
+            <button id="backButtonBottom" class="nav-button">← Back to Messages</button>
+            <button id="seeMoreButton" class="nav-button">See More</button>
+        </div>
+
+    </div>
+
+    <div id="flowerBouquetContainer">
+        <h2 class="title text-center mb-8">For My Hopia <3</h2>
+        <div class="flower-container">
+            <div class="rose">
+                <div class="stem"></div>
+                <div class="leaf"></div>
+                <div class="rose-flower">
+                    <div class="petal" style="--petal-rotate:0deg; --petal-z:0px;"></div>
+                    <div class="petal" style="--petal-rotate:30deg; --petal-z:10px;"></div>
+                    <div class="petal" style="--petal-rotate:60deg; --petal-z:20px;"></div>
+                    <div class="petal" style="--petal-rotate:90deg; --petal-z:10px;"></div>
+                    <div class="petal" style="--petal-rotate:120deg; --petal-z:0px;"></div>
+                    <div class="petal" style="--petal-rotate:150deg; --petal-z:10px;"></div>
+                    <div class="petal" style="--petal-rotate:180deg; --petal-z:20px;"></div>
+                    <div class="petal" style="--petal-rotate:210deg; --petal-z:10px;"></div>
+                    <div class="petal" style="--petal-rotate:240deg; --petal-z:0px;"></div>
+                    <div class="petal" style="--petal-rotate:270deg; --petal-z:10px;"></div>
+                    <div class="petal" style="--petal-rotate:300deg; --petal-z:20px;"></div>
+                    <div class="petal" style="--petal-rotate:330deg; --petal-z:10px;"></div>
+                    <div class="petal" style="--petal-rotate:15deg; --petal-z:-5px; background: linear-gradient(to top, #ffcdd2, #ef9a9a);"></div>
+                    <div class="petal" style="--petal-rotate:75deg; --petal-z:-10px; background: linear-gradient(to top, #ffcdd2, #ef9a9a);"></div>
+                    <div class="petal" style="--petal-rotate:105deg; --petal-z:-5px; background: linear-gradient(to top, #ffcdd2, #ef9a9a);"></div>
+                    <div class="petal" style="--petal-rotate:165deg; --petal-z:-10px; background: linear-gradient(to top, #ffcdd2, #ef9a9a);"></div>
+                    <div class="petal" style="--petal-rotate:225deg; --petal-z:-5px; background: linear-gradient(to top, #ffcdd2, #ef9a9a);"></div>
+                    <div class="petal" style="--petal-rotate:285deg; --petal-z:-10px; background: linear-gradient(to top, #ffcdd2, #ef9a9a);"></div>
+                    <div class="petal" style="--petal-rotate:345deg; --petal-z:-5px; background: linear-gradient(to top, #ffcdd2, #ef9a9a);"></div>
+                </div>
+            </div>
+        </div>
+        <button id="closeBouquetButton" class="nav-button">Close</button>
+    </div>
+
+    <script>
+        const messageDisplay = document.getElementById('message-display');
+        const subtitle = document.getElementById('subtitle');
+        const viewPhotosButton = document.getElementById('viewPhotosButton');
+        const mainAnniversaryPage = document.getElementById('main-anniversary-page');
+        const photoGalleryPage = document.getElementById('photo-gallery-page');
+        const backButtons = document.querySelectorAll('#backButton, #backButtonBottom');
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        const playMusicButton = document.getElementById('playMusicButton');
+
+        // New elements for showing/hiding content
+        const initialContent = document.getElementById('initial-content');
+        const hiddenContent = document.getElementById('hidden-content');
+
+        const photoRows = document.querySelectorAll('.photo-row');
+
+        // New elements for flower bouquet
+        const seeMoreButton = document.getElementById('seeMoreButton');
+        const flowerBouquetContainer = document.getElementById('flowerBouquetContainer');
+        const closeBouquetButton = document.getElementById('closeBouquetButton');
+
+
+        /**
+         * Plays the background music and reveals the hidden content.
+         */
+        function playMusicAndRevealContent() {
+            playBackgroundMusic();
+            initialContent.style.display = 'none'; // Hide the "Play Music" button container
+            hiddenContent.classList.remove('hidden-at-start'); // Show the message and view memories button
+            hiddenContent.classList.add('visible-on-click'); // Apply fade-in
+        }
+
+        /**
+         * Plays the background music.
+         */
+        function playBackgroundMusic() {
+            backgroundMusic.play().catch(error => {
+                console.log("Error playing music:", error);
+            });
+        }
+
+        /**
+         * Shows the photo gallery page and hides the main anniversary page.
+         */
+        function showPhotoGallery() {
+            mainAnniversaryPage.style.display = 'none';
+            photoGalleryPage.style.display = 'flex';
+            setTimeout(() => {
+                photoGalleryPage.classList.add('active');
+            }, 50);
+
+            window.scrollTo(0, 0);
+            checkPhotoVisibility();
+        }
+
+        /**
+         * Shows the main anniversary page and hides the photo gallery page.
+         */
+        function showMainPage() {
+            photoGalleryPage.classList.remove('active');
+            setTimeout(() => {
+                photoGalleryPage.style.display = 'none';
+                mainAnniversaryPage.style.display = 'flex';
+            }, 1000);
+            flowerBouquetContainer.style.display = 'none'; // Hide bouquet if open
+        }
+
+        /**
+         * Shows the flower bouquet.
+         */
+        function showFlowerBouquet() {
+            flowerBouquetContainer.style.display = 'flex';
+        }
+
+        /**
+         * Hides the flower bouquet.
+         */
+        function closeFlowerBouquet() {
+            flowerBouquetContainer.style.display = 'none';
+        }
+
+        /**
+         * Checks which photo rows are in view and adds the 'visible' class.
+         */
+        function checkPhotoVisibility() {
+            photoRows.forEach(row => {
+                const rect = row.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    row.classList.add('visible');
+                }
+            });
+        }
+
+        // Event Listeners
+        viewPhotosButton.addEventListener('click', showPhotoGallery);
+
+        backButtons.forEach(button => {
+            button.addEventListener('click', showMainPage);
+        });
+
+        playMusicButton.addEventListener('click', playMusicAndRevealContent); // Updated to call the new function
+
+        seeMoreButton.addEventListener('click', showFlowerBouquet);
+        closeBouquetButton.addEventListener('click', closeFlowerBouquet);
+
+        window.addEventListener('scroll', checkPhotoVisibility);
+
+        window.onload = function() {
+            subtitle.style.transition = 'transform 1.2s ease-out, opacity 1.2s ease-out';
+            subtitle.style.transform = 'translateY(0)';
+            subtitle.style.opacity = '1';
+        };
+    </script>
+</body>
+</html>
